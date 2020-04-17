@@ -35,5 +35,4 @@ class LineSplitStream extends stream.Transform {
     callback();
   }
 }
-
 module.exports = LineSplitStream;
