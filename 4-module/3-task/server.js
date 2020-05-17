@@ -1,6 +1,7 @@
 const url = require('url');
 const http = require('http');
 const path = require('path');
+const fs = require('fs');
 
 const server = new http.Server();
 
@@ -11,11 +12,23 @@ server.on('request', (req, res) => {
 
   switch (req.method) {
     case 'DELETE':
+      if(pathname.indexOf('/')> -1){
+        res.statusCode = 400;
+        res.end('not support /');
+      }
+      else if (fs.existsSync(filepath)===false){
+        res.statusCode = 404;
+        res.end('file not exist');
+      } else {
+        fs.unlink(filepath, (err) => {})
+        res.statusCode = 200;
+        res.end();
+      }
 
       break;
 
     default:
-      res.statusCode = 501;
+      res.statusCode = 500;
       res.end('Not implemented');
   }
 });
